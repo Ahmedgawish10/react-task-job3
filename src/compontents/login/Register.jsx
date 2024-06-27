@@ -5,16 +5,34 @@ import { Link } from "react-router-dom"
 import { useDispatch, useSelector} from 'react-redux'
 import { Formik} from 'formik';
 import * as Yup from 'yup';
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
+import { useNavigate } from 'react-router-dom';
+
 const schema = Yup.object().shape({
   name: Yup.string().required("name is required "),
   email: Yup.string() .required("email is required ") .email("Invalid email format"),
   password: Yup.string().required("password is  required ") .min(8, "password must be at least 8 characters"),
-  confPassword: Yup.string().oneOf([Yup.ref("password")], "password not match with password"),
+  confPassword: Yup.string().required("confirm password  is  required ").oneOf([Yup.ref("password")], "password not match with password"),
 
 });
 
  const Register = () => {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    if (isLoggedIn) {
+      navigate('/', { replace: true });
+      toast.success("You already Logged in", {
+        className: "custom-class-toast",
+      });
+      
+    }
+    },[])
+
+
+
+
 const [loading, setLoading] = useState(false);
 const dispatch = useDispatch();
 const initialValues = {
@@ -104,6 +122,7 @@ const onSubmit =  (values) => {
                   value={values.confPassword}
                   placeholder=""
                   className="form-control"
+                  
                 />
                  <p className="error text-danger  ms-2">
                   {errors.confPassword }

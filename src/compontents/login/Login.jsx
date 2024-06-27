@@ -1,13 +1,12 @@
 import { React, useState, useEffect } from "react";
 import "./login.css";
-import back from "../../assets/images/my-account.jpg";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { login } from "../../redux-store/AuthSlice";
 import toast from "react-hot-toast";
-
+import { useNavigate } from 'react-router-dom';
 const schema = Yup.object().shape({
   email: Yup.string()
     .required("email is required ")
@@ -16,8 +15,26 @@ const schema = Yup.object().shape({
     .required("password is  required ")
     .min(8, "Password must be at least 8 characters"),
 });
+ 
+
+
 
 const Login = () => {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+  useEffect(()=>{
+    if (isLoggedIn) {
+      navigate('/', { replace: true });
+      toast.success("You already Logged in", {
+        className: "custom-class-toast",
+      });
+      
+    }
+    },[])
+    
+
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const initialValues = {
@@ -41,7 +58,7 @@ const Login = () => {
           toast.success("Login successfully", {
             className: "custom-class-toast",
           });
-          window.location.href = "/";
+          navigate('/', { replace: true });
           dispatch(login());
         }, 3000);
       } else {
