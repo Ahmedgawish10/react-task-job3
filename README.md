@@ -5,7 +5,7 @@
 ---
 ● Task Management:Add new task , edit the tak, delete the task , filter the task (compelete not compelete)  <br>
 ● Error Handling: Display error messages using Toastr notifications for a better user experience.<br>
-● Local Storage: Save user data and cart information in local storage to maintain state across sessions.
+● Local Storage: Save user data and todos in local storage.
 
 🚀 Technologies Used
 ---
