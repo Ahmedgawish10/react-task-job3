@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Todos from "./../compontents/todos/Todos";
 import TodosForm from "./../compontents/todos/TodosForm";
 const initialData = localStorage.getItem("todos")
@@ -8,6 +8,19 @@ const TodoList = () => {
   const [todos, setTodos] = useState(initialData);
   const [mode, setMode] = useState("add");
   const [completeTask, setCompleteTask] = useState(false);
+  const [nextId, setNextId] = useState(() => {
+    // Initialize nextId from localStorage or start from 1
+    const savedId = localStorage.getItem("nextTodoId");
+    return savedId ? parseInt(savedId, 10) : 1;
+  });
+
+  useEffect(() => {
+    // Store nextId in localStorage whenever it changes
+    localStorage.setItem("nextTodoId", nextId.toString());
+  }, [nextId]);
+
+
+
 
   const [activeTodo, setActiveTodo] = useState(null);
 
@@ -29,27 +42,26 @@ const TodoList = () => {
   };
 
   const deleteTodo = (id) => {
-    setTodos((data) => {
-      const newData = data.filter((td) => td.id !== id);
-      return newData;
-    });
+  
+    const newData = todos.filter((td) => td.id !== id);
+    setTodos(newData);
   };
 
   const addNewTodo = (title) => {
     if (mode == "add") {
       const newTodo = {
-        id: todos.length + 1,
+        id: nextId,
         title: title,
-        compeleted: false,
+        compeleted: true,
       };
       setTodos((PrevTodos) => {
         return [newTodo, ...PrevTodos];
       });
+      setNextId((prevId) => prevId + 1); 
+
     } else if (mode === "edit") {
-      console.log(activeTodo);
       const newTodos = todos.map((t) => {
         if (t.id === activeTodo.id) {
-          console.log(6);
           t.title = title;
         }
         return t;
