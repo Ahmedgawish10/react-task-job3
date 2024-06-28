@@ -39,8 +39,7 @@ const TodoList = () => {
     });
   };
 
-  const deleteTodo = (id) => {
-  
+  const deleteTodo = (id) => { 
     const newData = todos.filter((td) => td.id !== id);
     setTodos(newData);
     if (newData.length==0) {
@@ -53,7 +52,7 @@ const TodoList = () => {
       const newTodo = {
         id: nextId,
         title: title,
-        compeleted: true,
+        compeleted:false,
       };
       setTodos((PrevTodos) => {
         return [newTodo, ...PrevTodos];
