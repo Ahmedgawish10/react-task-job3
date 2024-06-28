@@ -9,13 +9,11 @@ const TodoList = () => {
   const [mode, setMode] = useState("add");
   const [completeTask, setCompleteTask] = useState(false);
   const [nextId, setNextId] = useState(() => {
-    // Initialize nextId from localStorage or start from 1
-    const savedId = localStorage.getItem("nextTodoId");
-    return savedId ? parseInt(savedId, 10) : 1;
+    
+    return localStorage.getItem("nextTodoId")? parseInt(localStorage.getItem("nextTodoId")) : 1;
   });
 
   useEffect(() => {
-    // Store nextId in localStorage whenever it changes
     localStorage.setItem("nextTodoId", nextId.toString());
   }, [nextId]);
 
@@ -45,6 +43,9 @@ const TodoList = () => {
   
     const newData = todos.filter((td) => td.id !== id);
     setTodos(newData);
+    if (newData.length==0) {
+      setNextId(1)      
+    }
   };
 
   const addNewTodo = (title) => {

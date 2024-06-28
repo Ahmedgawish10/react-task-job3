@@ -130,7 +130,7 @@ const Login = () => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={values.password}
-                      placeholder="Enter password"
+                      placeholder=""
                       className="form-control"
                     />
                     <p className="error text-danger  ms-2">{errors.password}</p>
